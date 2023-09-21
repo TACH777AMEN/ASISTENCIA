@@ -11,23 +11,33 @@
     <h1>Zona Asociada</h1>
 
     <script>
-        // Verificar la sesión actual al cargar la página
-        window.onload = function() {
-            if (verificarSesion()) {
-                var usuario = obtenerUsuarioActual();
-                // Mostrar la zona correspondiente al usuario
-                var zonaAsociada = usuario;
-                if (zonaAsociada !== null) {
-                    var mensaje = "Bienvenido, " + usuario + ". Estás en la Zona " + zonaAsociada + ".";
-                    document.body.innerHTML += "<p>" + mensaje + "</p>";
-                } else {
-                    // Si el usuario no tiene una zona asociada, redirigir a la página de inicio de sesión
-                    window.location.href = "index.html";
-                }
-            } else {
-                // Redirigir a la página de inicio de sesión si no hay sesión activa
-                window.location.href = "index.html";
+        // Obtener el nombre de usuario de la URL (parámetro "zona")
+        var urlParams = new URLSearchParams(window.location.search);
+        var usuario = urlParams.get("zona");
+
+        // Verificar la sesión actual y la zona asociada al usuario
+        if (verificarSesion() && usuarios.hasOwnProperty(usuario)) {
+            var zonaAsociada = usuarios[usuario];
+            var mensaje = "Bienvenido, " + usuario + ". Estás en la Zona " + zonaAsociada + ".";
+            document.body.innerHTML += "<p>" + mensaje + "</p>";
+
+            // Verificar si el usuario es "tachamen" y está en "Zona 1" para mostrar la lista de asistencia
+            if (usuario === "tachamen" && zonaAsociada === "zona1") {
+                document.body.innerHTML += "<h2>Lista de Asistencia</h2>";
+                document.body.innerHTML += "<button onclick='registrarAsistencia(\"Mañana\")'>Mañana</button>";
+                document.body.innerHTML += "<button onclick='registrarAsistencia(\"Tarde\")'>Tarde</button>";
+                document.body.innerHTML += "<button onclick='registrarAsistencia(\"Noche\")'>Noche</button>";
             }
+        } else {
+            // Si el usuario no tiene una zona asociada o no hay sesión, redirigir a la página de inicio de sesión
+            window.location.href = "index.html";
+        }
+
+        // Función para registrar la asistencia según el período (Mañana, Tarde, Noche)
+        function registrarAsistencia(periodo) {
+            // Aquí puedes implementar la lógica para registrar la asistencia según el período seleccionado
+            // Por ejemplo, puedes enviar datos al servidor o realizar alguna otra acción específica.
+            alert("Asistencia registrada para el período: " + periodo);
         }
     </script>
 </body>
