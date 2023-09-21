@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <script src="session.js"></script>
+    <script src="usuarios.js"></script>
+</head>
+<body>
+    <h1>Iniciar Sesión</h1>
+    <form id="formulario">
+        <label for="usuario">Usuario:</label>
+        <input type="text" id="usuario" name="usuario" required><br><br>
+
+        <label for="contrasena">Contraseña:</label>
+        <input type="password" id="contrasena" name="contrasena" required><br><br>
+
+        <input type="submit" value="Iniciar Sesión">
+    </form>
+    
+    <p id="mensaje"></p>
+
+    <script>
+        document.getElementById("formulario").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            // Verificar las credenciales ingresadas
+            var usuario = document.getElementById("usuario").value;
+            var contrasena = document.getElementById("contrasena").value;
+
+            // Verificar las credenciales y redirigir si son válidas
+            if (usuarios.hasOwnProperty(usuario) && usuarios[usuario] === contrasena) {
+                // Iniciar sesión
+                iniciarSesion(usuario);
+
+                // Redirigir a zonas.html con un parámetro que identifica la zona
+                window.location.href = "zonas.html?zona=" + usuario;
+            } else {
+                document.getElementById("mensaje").textContent = "Credenciales incorrectas. Inténtalo nuevamente.";
+            }
+        });
+    </script>
+</body>
+</html>
